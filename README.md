@@ -90,7 +90,7 @@ The project is prepared for a manual PythonAnywhere deployment, but has not been
 6. In the Web tab, map `/static/` to the deployed project's `staticfiles/` directory and `/media/` to its `media/` directory.
 7. After confirming HTTPS works correctly, configure HTTPS redirection and consider HSTS. Django's deployment check currently warns that these two settings are not enabled.
 
-The development database, generated media, virtual environments, local secrets, and collected static output are excluded by `.gitignore`. This workspace does not have a Git repository initialized yet.
+The development database, generated media, virtual environments, local secrets, and collected static output are excluded by `.gitignore`. The project is tracked on GitHub at [Django-QR-Code-Generator](https://github.com/tsalajunior/Django-QR-Code-Generator).
 
 ## Current Development Note
 
