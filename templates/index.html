@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#124b9a">
+    <title>Django QR Code Generator</title>
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/qr-studio-icon.svg' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="topbar">
+            <a class="brand" href="{% url 'index' %}" aria-label="Django QR Code Generator home">
+                <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+                <span>QR Studio</span>
+            </a>
+            <span class="topbar-note">A little text. A useful code.</span>
+        </header>
+
+        <main>
+            <section class="intro" aria-labelledby="page-title">
+                <p class="eyebrow">Quick code maker</p>
+                <h1 id="page-title">Django QR Code Generator</h1>
+                <p class="intro-copy">Make a crisp, scannable QR code from a link, note, or any short message.</p>
+            </section>
+
+            <section class="workspace" aria-label="QR code generator">
+                <div class="form-panel">
+                    <h2 class="section-label">Create your code</h2>
+                    <p class="section-hint">Add the text you want your QR code to share.</p>
+                    <form method="post" action="{% url 'index' %}">
+                        {% csrf_token %}
+                        <label class="field-label" for="qr-data">Your text</label>
+                        <input
+                            class="text-input"
+                            id="data"
+                            name="data"
+                            type="text"
+                            placeholder="Type your text here..."
+                            maxlength="250"
+                            value="{{ data|default:'' }}"
+                            autocomplete="off"
+                            required
+                        >
+                        <div class="field-meta">
+                            <span>Up to 250 characters</span>
+                            <span><span id="character-count">0</span> / 250</span>
+                        </div>
+                        {% if error %}
+                            <p class="error-message" role="alert">{{ error }}</p>
+                        {% endif %}
+                        <button class="generate-button" type="submit">
+                            <span>Generate</span>
+                            <span class="button-arrow" aria-hidden="true">&#8594;</span>
+                        </button>
+                    </form>
+                </div>
+
+                <aside class="result-panel" aria-live="polite" aria-label="Generated QR code">
+                    <h2 class="result-title">Your QR code</h2>
+                    <div class="qr-frame">
+                        {% if qr_code %}
+                            <img class="qr-image" src="{{ qr_code.qr_code.url }}" alt="QR code for: {{ data }}">
+                        {% else %}
+                            <div class="empty-frame" aria-hidden="true"><span class="empty-center">QR</span></div>
+                        {% endif %}
+                    </div>
+                    {% if qr_code %}
+                        <p class="result-caption">Ready to scan or save.</p>
+                        <a class="download-link" href="{{ qr_code.qr_code.url }}" download>Download PNG</a>
+                    {% else %}
+                        <p class="result-caption">Your generated code will appear here.</p>
+                    {% endif %}
+                </aside>
+            </section>
+        </main>
+
+        <footer>
+            <span>Made with Django</span>
+            <span>By <a href="https://github.com/tsalajunior" target="_blank">Stéphane Tsala</a></span>
+        </footer>
+    </div>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
